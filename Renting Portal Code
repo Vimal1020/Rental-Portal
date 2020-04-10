@@ -1,0 +1,122 @@
+<?php
+$area = $_POST['area'];
+$Flat = $_POST['Flat'];
+if(isset($_POST['search']))//search for match
+{
+
+$query = "SELECT * FROM `room` WHERE `area` = '$area' and `Flat` = '$Flat' ";  //query for output
+$search_result = filterTable($query);  
+}
+else
+{
+    echo "NO RECORDS MATCH YOUR CRITERIA";
+   
+}
+//connectivity for phpmyadmin
+function filterTable($query)
+{
+$con = mysqli_connect("localhost","root","123","room");
+  $filter_Result = mysqli_query($con, $query);
+    return $filter_Result;
+}
+?>
+	//frontend Work...
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOUSE RENTAL</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Sriracha&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+   <style>
+body { 
+  background-image: url('5jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; 
+}
+        .t1{
+            text-align:center;
+            padding: 2px;
+            color:solid black;
+        }
+        table,th,td{
+                border:1px solid black;
+            }
+            table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: black;
+    float:left;
+        }
+        table,th,td{
+                border:1px solid black;
+            }
+            table {
+    margin-left:auto; 
+    margin-right:auto;
+  }
+  div.container {
+    width:70%; 
+    margin:1%;
+  }
+
+        </style>
+</head>
+<body>
+
+<center>
+    <div class="container">
+<h1 class="t1"> Renting Portal:</h1>
+    <form  action="pr.php" class="form-horizontal" method="post" >
+        <table width="294" cellpadding="20" class="table table-borderless table-dark" class= "table table-dark"  max-width="50px" cellspacing="20" align="left"  class="table table-striped" align="center" height="152" border="1">
+            <tr>
+                <td width="123" class="table-primary">Location: </td>
+                <td><input type ="text" name = "area" method="post"  class="form-control"  placeholder="Enter Location" required></td>
+</tr>
+<tr>
+    <td> Flat specification </td>
+<td><input type ="text" name="Flat" method="post"  class="form-control"  placeholder="i.e 1 BHK , 2 BHK & 3 BHK" required></td>
+</tr>
+<tr>
+ <td> Enter your choice</td>
+    <td><input type="submit" name = "search" class="btn btn-success" value="Submit">
+    <input type="reset" name = "submit" class="btn btn-success value="reset">
+    </td>
+    </tr>
+</table>
+</div>
+</center>
+
+<table width="65%" cellpadding="20" class="table table-borderless table-dark" class= "table table-dark" cellspacing="20" align="center" class="table table-hover" height="152" border="1">
+        <tr>
+        <thead class="black white-text">
+                    <th scope="row">Owner Name</th>
+                    <th scope="row" >Address</th>
+                    <th scope="row">Area</th>
+                    <th scope="row">Flat</th>
+                    <th scope="row">Phone Number</th>
+                    <th scope="row">Rent</th>
+                </tr>
+                </thead>
+ 
+   
+
+<?php while($row = mysqli_fetch_array($search_result)):?>
+                <tr>
+                    <td><?php echo $row['owner_name'];?></td>
+                    <td><?php echo $row['address'];?></td>
+                    <td><?php echo $row['area'];?></td>
+                    <td ><?php echo $row['Flat'];?></td>
+                     <td><?php echo $row['phonenumber'];?></td>
+                     <td><?php echo $row['rent'];?></td>
+                </tr>
+                <?php endwhile;?>
+
+
+</table>
+   </form>
+</body>
+   </html>
